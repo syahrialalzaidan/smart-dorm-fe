@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-  const { onOpen } = useModal();
   return (
     <>
       <div className="h-[30vw] bg-[#6930B7] pl-[5%] flex justify-between pt-24">

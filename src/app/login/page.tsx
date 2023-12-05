@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 export default function Page() {
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
   return (
     <div className="p-[5%] bg-[url('/login-bg.svg')] bg-no-repeat flex flex-col items-center justify-center">
       <h1 className="text-[#6930B7] mb-16 font-semibold text-center text-6xl">
@@ -22,7 +22,7 @@ export default function Page() {
           {error ? (
             <p className="text-red-500 text-xs">Username is wrong!</p>
           ) : (
-            <div className="h-1"></div>
+            <div className="h-4"></div>
           )}
         </div>
 
