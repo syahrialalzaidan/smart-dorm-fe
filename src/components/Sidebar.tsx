@@ -21,38 +21,41 @@ export default function Sidebar() {
           </a>
 
           <ul className="flex flex-col gap-2">
-            <li
+            <a
               className={`flex cursor-pointer gap-6  ${
                 pathname.substring(0, 6) == "/kamar"
                   ? "bg-[#FAF5FF] text-[#6D28D9]"
                   : "bg-white text-gray-700"
               } px-2 rounded-l-lg py-3 hover:bg-[#FAF5FF] hover:text-[#6D28D9]`}
-            >
+              href="/kamar"
+           >
               <BiSolidCategory className="text-2xl" />
               <p>Kamar</p>
-            </li>
+            </a>
 
-            <li
+            <a
               className={`flex cursor-pointer gap-6 ${
                 pathname.substring(0, 9) == "/penghuni"
                   ? "bg-[#FAF5FF] text-[#6D28D9]"
                   : "bg-white text-gray-700"
-              }  text-gray-700 px-2 rounded-l-lg py-3 hover:bg-[#FAF5FF] hover:text-[#6D28D9]`}
+              } px-2 rounded-l-lg py-3 hover:bg-[#FAF5FF] hover:text-[#6D28D9]`}
+              href="/penghuni"
             >
               <MdGroups2 className="text-2xl" />
               <p>Penghuni</p>
-            </li>
+            </a>
 
-            <li
+            <a
               className={`flex cursor-pointer gap-6 ${
                 pathname.substring(0, 8) == "/seleksi"
                   ? "bg-[#FAF5FF] text-[#6D28D9]"
                   : "bg-white text-gray-700"
-              }  text-gray-700 px-2 rounded-l-lg py-3 hover:bg-[#FAF5FF] hover:text-[#6D28D9]`}
+              } px-2 rounded-l-lg py-3 hover:bg-[#FAF5FF] hover:text-[#6D28D9]`}
+              href="/seleksi"
             >
               <IoIosPersonAdd className="text-2xl" />
               <p>Seleksi Penghuni</p>
-            </li>
+            </a>
           </ul>
         </div>
         <a
