@@ -4,9 +4,9 @@ import KamarBox from "./KamarBox";
 
 export default function Kamar() {
   return (
-    <div>
+    <div className="container mx-auto">
       <div className="flex justify-between items-center">
-        <h1 className="font-bold text-5xl">Kamar</h1>
+        <h1 className="font-bold text-4xl">Kamar</h1>
 
         <div className="flex gap-2">
           <button className="bg-purple-100 text-purple-700 flex gap-4 items-center justify-center rounded-lg px-4 py-2">
