@@ -4,9 +4,16 @@ import { BiSolidCategory } from "react-icons/bi";
 import { MdGroups2 } from "react-icons/md";
 import { IoIosPersonAdd } from "react-icons/io";
 import { usePathname } from "next/navigation";
+import Cookies from "universal-cookie";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const cookies = new Cookies();
+
+  const handleLogout = () => {
+    cookies.remove("token");
+    window.location.href = "/";
+  };
 
   return (
     <aside
@@ -28,7 +35,7 @@ export default function Sidebar() {
                   : "bg-white text-gray-700"
               } px-2 rounded-l-lg py-3 hover:bg-[#FAF5FF] hover:text-[#6D28D9]`}
               href="/kamar"
-           >
+            >
               <BiSolidCategory className="text-2xl" />
               <p>Kamar</p>
             </a>
@@ -61,6 +68,7 @@ export default function Sidebar() {
         <a
           href="/"
           className={`px-8 flex items-center gap-3 mt-16 p-4 text-[#4C4E64]/[0.87] rounded-lg group hover:bg-red-500 hover:text-white`}
+          onClick={handleLogout}
         >
           <MdLogout className="text-2xl" />
           <span className="whitespace-nowrap font-bold">Logout</span>

@@ -1,8 +1,34 @@
+"use client";
 import { FaSort } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import KamarBox from "./KamarBox";
+import Pagination from "@/components/pagination/Pagination";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function Kamar() {
+interface Kamar {
+  id: number;
+  nomor_kamar: number;
+  fasilitas: string;
+  status: string;
+  Created_at: string;
+  Updated_at: string;
+}
+
+interface KamarProps {
+  data: Kamar[];
+  page: number;
+  totalPage: number;
+}
+
+export default function Kamar({ kamar }: { kamar: KamarProps }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  let currentPage: number = 1;
+  if (pathname === "/kamar") {
+  } else {
+    currentPage = +pathname.substring(pathname.length - 1);
+  }
+
   return (
     <div className="container mx-auto">
       <div className="flex justify-between items-center">
@@ -25,17 +51,25 @@ export default function Kamar() {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-6 mt-8">
-        {Array(10)
-          .fill(0)
-          .map((_, i) => (
-            <KamarBox key={i}
-                nama={`Kamar ${i + 100}`}
-                fasilitas={["Kamar mandi dalam", "Meja belajar"]}
-                available={i % 2 === 0}
-            />
-          ))}
+      <div className="flex flex-wrap gap-6 my-8">
+        {kamar.data.map((kamar) => (
+          <KamarBox
+            key={kamar.id}
+            nama={`Kamar ${kamar.nomor_kamar}`}
+            fasilitas={kamar.fasilitas}
+            available={kamar.status.toLowerCase() === "available"}
+          />
+        ))}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        pageSize={10}
+        totalDataCount={10 * kamar.totalPage}
+        onPageChange={(page) => {
+          router.push(`/kamar/${page}`);
+        }}
+      />
     </div>
   );
 }

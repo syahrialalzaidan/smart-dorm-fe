@@ -5,7 +5,7 @@ import { LiaEditSolid } from "react-icons/lia";
 
 interface KamarBoxProps {
   nama: string;
-  fasilitas: string[];
+  fasilitas: string;
   available: boolean;
 }
 
@@ -43,7 +43,7 @@ export default function KamarBox({
           <span className="font-bold">
             Fasilitas: <br />
           </span>{" "}
-          {fasilitas.join(", ")}
+          {fasilitas}
         </p>
       </div>
     </div>
