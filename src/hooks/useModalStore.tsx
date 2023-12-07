@@ -7,9 +7,8 @@ export type ModalType =
     | "kontrak"
 
 interface ModalData {
-    name?: string;
+    userId?: number;
     roomId?: number;
-    selectedOption?: number;
 }
 
 interface ModalStore {

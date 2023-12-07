@@ -6,6 +6,8 @@ import { useModal } from "@/hooks/useModalStore";
 import { CiEdit } from "react-icons/ci";
 import { usePathname } from "next/navigation";
 import { IoIosPersonAdd } from "react-icons/io";
+import { Penghuni } from "@/types/penghuni";
+import { GoDotFill } from "react-icons/go";
 
 interface PenghuniProps {
   datacalonpenghuni: any;
@@ -29,7 +31,7 @@ export default function Seleksi({ datacalonpenghuni }: PenghuniProps) {
         <div className="flex gap-4">
           <div className="rounded-xl bg-purple-300 flex gap-4 items-center text-purple-800 px-4 cursor-pointer border border-purple-800"
             onClick={() => {
-                onOpen("dataCalonPenghuni");
+              onOpen("dataCalonPenghuni");
             }}
           >
             <p>Tambah Calon Penghuni</p>
@@ -59,17 +61,24 @@ export default function Seleksi({ datacalonpenghuni }: PenghuniProps) {
         </thead>
 
         <tbody>
-          {datacalonpenghuni.data?.map((penghuni: any) => (
-            <tr className="border border-gray-300">
-              <td className="p-4">{penghuni.nama}</td>
+          {datacalonpenghuni.data?.map((penghuni: Penghuni['data'], index: number) => (
+            <tr className="border border-gray-300" key={index}>
+              <td className="p-4 cursor-pointer" onClick={() => onOpen("dataCalonPenghuni", { userId: penghuni.id })}>{penghuni.nama}</td>
               <td className="p-4">{penghuni.jenis_kelamin}</td>
               <td className="p-4">{penghuni.nomor_telepon}</td>
-              <td className="p-4">{penghuni.kontak_darurat}</td>
               <td className="p-4">
-                <CiEdit
-                  className="text-4xl text-gray-400 cursor-pointer hover:scale-110"
-                  onClick={() => onOpen("dataCalonPenghuni")}
-                />
+                <div className={`flex items-center px-1.5 gap-2 py-0.5 w-3/4 rounded-xl
+                ${penghuni.status === "Menunggu Pembuatan Kontrak" ? "text-amber-600 bg-[#FFF2DD]" :
+                    penghuni.status === "Menunggu Pembayaran" ? "text-green-600 bg-green-100" : "text-gray-800 bg-gray-200"}`}>
+                  <GoDotFill className="text-xl" />
+                  <p>{penghuni.status}</p>
+                </div>
+              </td>
+              <td className="p-4">
+                  <CiEdit
+                    className="text-4xl text-gray-400 cursor-pointer hover:scale-110"
+                    onClick={() => onOpen(`${penghuni.status === "Belum Direview" ? "reviewCalonPenghuni" : penghuni.status === "Menunggu Pembuatan Kontrak" ? "kontrak" : "dataCalonPenghuni"}`, { userId: penghuni.id })}
+                  />
               </td>
             </tr>
           ))}

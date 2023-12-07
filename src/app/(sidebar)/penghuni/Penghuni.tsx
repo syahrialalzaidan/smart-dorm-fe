@@ -5,9 +5,10 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/useModalStore";
 import { CiEdit } from "react-icons/ci";
+import { Penghuni, PenghuniList, PenghuniPageProps } from "@/types/penghuni";
 
 interface PenghuniProps {
-  datapenghuni: any;
+  datapenghuni: PenghuniPageProps;
 }
 
 export default function Penghuni({ datapenghuni }: PenghuniProps) {
@@ -47,8 +48,8 @@ export default function Penghuni({ datapenghuni }: PenghuniProps) {
         </thead>
 
         <tbody>
-          {datapenghuni.data?.map((penghuni: any) => (
-            <tr className="border border-gray-300">
+          {datapenghuni.data?.map((penghuni: PenghuniList, index: number) => (
+            <tr className="border border-gray-300" key={index}>
               <td className="pl-8 p-4">{penghuni.nomor_kamar}</td>
               <td className="p-4">{penghuni.nama}</td>
               <td className="p-4">{penghuni.jenis_kelamin}</td>
@@ -57,7 +58,7 @@ export default function Penghuni({ datapenghuni }: PenghuniProps) {
               <td className="p-4">
                 <CiEdit
                   className="text-4xl text-gray-400 cursor-pointer hover:scale-110"
-                  onClick={() => onOpen("dataPenghuni")}
+                  onClick={() => onOpen("dataPenghuni", { userId: penghuni.id })}
                 />
               </td>
             </tr>

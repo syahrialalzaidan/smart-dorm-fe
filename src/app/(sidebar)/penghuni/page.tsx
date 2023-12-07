@@ -2,6 +2,7 @@ import Penghuni from "./Penghuni";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+
 export default async function PenghuniPage({
   params,
 }: {
