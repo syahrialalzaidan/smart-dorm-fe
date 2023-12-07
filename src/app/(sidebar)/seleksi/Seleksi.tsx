@@ -59,7 +59,7 @@ export default function Seleksi({ datacalonpenghuni }: PenghuniProps) {
         </thead>
 
         <tbody>
-          {datacalonpenghuni.data.map((penghuni: any) => (
+          {datacalonpenghuni.data?.map((penghuni: any) => (
             <tr className="border border-gray-300">
               <td className="p-4">{penghuni.nama}</td>
               <td className="p-4">{penghuni.jenis_kelamin}</td>

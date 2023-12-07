@@ -47,7 +47,7 @@ export default function Penghuni({ datapenghuni }: PenghuniProps) {
         </thead>
 
         <tbody>
-          {datapenghuni.data.map((penghuni: any) => (
+          {datapenghuni.data?.map((penghuni: any) => (
             <tr className="border border-gray-300">
               <td className="pl-8 p-4">{penghuni.nomor_kamar}</td>
               <td className="p-4">{penghuni.nama}</td>
