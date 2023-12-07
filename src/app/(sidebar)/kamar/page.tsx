@@ -8,12 +8,14 @@ export default async function Page() {
     redirect("/login");
   }
 
-  const data = await fetch(process.env.API_URL + "kamar", {
+  const res = await fetch(process.env.API_URL + "kamar", {
     headers: {
       Authorization: `Bearer ${cookie}`,
     },
-  }).then((res) => res.json());
-
+  });
+  
+  const data = await res.json();
+  
   return (
     <div className="w-full p-[7%] min-h-screen">
         <Kamar kamar={data} />

@@ -1,15 +1,55 @@
+"use client"
 import { useModal } from "@/hooks/useModalStore";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
+import useSWR from "swr";
+import fetcher from "@/lib/fetcher";
+import Cookies from "universal-cookie";
+import { Penghuni } from "@/types/penghuni";
+import toast from "react-hot-toast";
 
 export const DataPenghuniModal = () => {
     const { type, data, isOpen, onClose } = useModal();
+    const router = useRouter();
+
+    const cookies = new Cookies(null, { path: "/" });
+    const token = cookies.get("token");
 
     const isModalOpen = isOpen && type === "dataPenghuni";
 
+    const {
+        data: penghuniData,
+        error,
+        isLoading,
+    } = useSWR<Penghuni>(
+        `http://localhost:8080/penghuni/${data.userId}`,
+        () => fetcher(`http://localhost:8080/penghuni/${data.userId}`, token as string)
+    );
+
     const [showModal, setShowModal] = useState(isOpen);
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        const res = await fetch(`http://localhost:8080/penghuni/${data.userId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (res.status === 200) {
+            toast.success("Successfully deleted!");
+            handleClose();
+            router.refresh();
+            window.location.reload();
+        } else {
+            toast.error("Failed to delete!");
+        }
+        setIsSubmitting(false);
+    }
 
     const handleClose = useCallback(() => {
         if (isSubmitting) return;
@@ -23,6 +63,10 @@ export const DataPenghuniModal = () => {
         return null;
     }
 
+    if (isLoading) {
+        return
+    }
+
     return (
         <>
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70">
@@ -33,26 +77,27 @@ export const DataPenghuniModal = () => {
                             <IoMdClose className="w-5 h-5" />
                         </div>
                     </div>
-                    <form className="w-full flex flex-col gap-6">
+                    <form className="w-full flex flex-col gap-6" onSubmit={handleDelete}>
                         <div className="w-full flex flex-col gap-2">
                             <label>Nama</label>
                             <input
                                 type="text"
                                 className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                 placeholder="John Doe"
+                                value={penghuniData?.data.nama}
+                                disabled
                             />
                         </div>
                         <div className="flex gap-6">
                             <div className="w-1/2 flex flex-col gap-2">
                                 <label>Jenis Kelamin</label>
-                                <select
-                                    className="border border-slate-300 rounded-sm py-1.5 px-2 text-slate-500 w-full placeholder-slate-500"
-                                    placeholder="Jenis Kelamin"
-                                >
-                                    <option value="" disabled selected hidden>Jenis Kelamin</option>
-                                    <option value="laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                </select>
+                                <input
+                                    type="text"
+                                    className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
+                                    placeholder="John Doe"
+                                    value={penghuniData?.data.jenis_kelamin}
+                                    disabled
+                                />
                             </div>
                             <div className="w-1/2 flex flex-col gap-2">
                                 <label>NIM</label>
@@ -60,6 +105,8 @@ export const DataPenghuniModal = () => {
                                     type="number"
                                     className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                     placeholder="18221000"
+                                    value={penghuniData?.data.nim}
+                                    disabled
                                 />
                             </div>
                         </div>
@@ -67,9 +114,11 @@ export const DataPenghuniModal = () => {
                             <div className="w-1/2 flex flex-col gap-2">
                                 <label>Nomor Telepon</label>
                                 <input
-                                    type="number"
+                                    type="text"
                                     className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                     placeholder="081234567890"
+                                    value={penghuniData?.data.nomor_telepon}
+                                    disabled
                                 />
                             </div>
                             <div className="w-1/2 flex flex-col gap-2">
@@ -78,6 +127,8 @@ export const DataPenghuniModal = () => {
                                     type="email"
                                     className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                     placeholder="janedoe@gmail.com"
+                                    value={penghuniData?.data.email}
+                                    disabled
                                 />
                             </div>
                         </div>
@@ -85,9 +136,11 @@ export const DataPenghuniModal = () => {
                             <div className="w-1/2 flex flex-col gap-2">
                                 <label>Nomor Telepon Kontak Darurat</label>
                                 <input
-                                    type="number"
+                                    type="text"
                                     className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                     placeholder="081234567890"
+                                    value={penghuniData?.data.kontak_darurat}
+                                    disabled
                                 />
                             </div>
                             <div className="w-1/2 flex flex-col gap-2">
@@ -96,6 +149,8 @@ export const DataPenghuniModal = () => {
                                     type="text"
                                     className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                     placeholder="Ibu - Janet Doe"
+                                    value={penghuniData?.data.hubungan_kontak_darurat + " - " + penghuniData?.data.nama_kontak_darurat}
+                                    disabled
                                 />
                             </div>
                         </div>
@@ -108,6 +163,8 @@ export const DataPenghuniModal = () => {
                                 in vulputate quam venenatis. Nulla vitae dolor vitae urna hendrerit tempus quis fermentum est. Etiam
                                 fermentum molestie nisl vitae laoreet. Fusce lectus lectus, faucibus in venenatis ac, pharetra vel nisl.
                                 Phasellus ullamcorper nibh eget metus aliquam convallis."
+                                value={penghuniData?.data.alasan}
+                                disabled
                             />
                         </div>
                         <div className="w-full flex justify-end mt-4">
