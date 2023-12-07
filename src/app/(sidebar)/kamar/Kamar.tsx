@@ -1,5 +1,6 @@
 "use client";
 import { FaSort } from "react-icons/fa";
+import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import KamarBox from "./KamarBox";
 import Pagination from "@/components/pagination/Pagination";
@@ -20,14 +21,10 @@ interface KamarProps {
   totalPage: number;
 }
 
-export default function Kamar({ kamar }: { kamar: KamarProps }) {
+export default function Kamar({ kamar, currentPage  }: { kamar: KamarProps, currentPage: number }) {
   const router = useRouter();
+  const [search, setSearch] = useState("");
   const pathname = usePathname();
-  let currentPage: number = 1;
-  if (pathname === "/kamar") {
-  } else {
-    currentPage = +pathname.substring(pathname.length - 1);
-  }
 
   return (
     <div className="container mx-auto">
@@ -35,17 +32,20 @@ export default function Kamar({ kamar }: { kamar: KamarProps }) {
         <h1 className="font-bold text-4xl">Kamar</h1>
 
         <div className="flex gap-2">
-          <button className="bg-purple-100 text-purple-700 flex gap-4 items-center justify-center rounded-lg px-4 py-2">
-            <p>Sort</p>
-            <FaSort />
-          </button>
-
           <div className="flex items-center gap-4 border border-gray-400 w-64 p-3 rounded-lg">
-            <AiOutlineSearch className="text-gray-400 text-2xl relative" />
+            <div
+              className="cursor-pointer"
+              onClick={() => router.push(`/kamar?search=${search}`)}
+            >
+              <AiOutlineSearch className="text-gray-400 text-2xl relative" />
+            </div>
             <input
-              type="text"
-              placeholder="Search"
+              type="number"
+              placeholder="Enter Room Number"
               className="focus:outline-none bg-transparent focus:border-none"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -60,6 +60,9 @@ export default function Kamar({ kamar }: { kamar: KamarProps }) {
             available={kamar.status.toLowerCase() === "available"}
           />
         ))}
+
+        {kamar.data.length === 0 && (<div className="text-center w-full">No Data Found</div>)}
+
       </div>
 
       <Pagination
@@ -67,7 +70,7 @@ export default function Kamar({ kamar }: { kamar: KamarProps }) {
         pageSize={10}
         totalDataCount={10 * kamar.totalPage}
         onPageChange={(page) => {
-          router.push(`/kamar/${page}`);
+          router.push(`/kamar?page=${page}`);
         }}
       />
     </div>

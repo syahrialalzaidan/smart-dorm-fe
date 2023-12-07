@@ -8,18 +8,20 @@ import { usePathname } from "next/navigation";
 import { IoIosPersonAdd } from "react-icons/io";
 import { Penghuni } from "@/types/penghuni";
 import { GoDotFill } from "react-icons/go";
+import { useState } from "react";
 
 interface PenghuniProps {
   datacalonpenghuni: any;
+  currentPage: number;
 }
 
-export default function Seleksi({ datacalonpenghuni }: PenghuniProps) {
+export default function Seleksi({
+  datacalonpenghuni,
+  currentPage,
+}: PenghuniProps) {
   const pathname = usePathname();
-  let currentPage: number = 1;
-  if (pathname === "/seleksi") {
-  } else {
-    currentPage = +pathname.substring(pathname.length - 1);
-  }
+
+  const [search, setSearch] = useState("");
   const router = useRouter();
   const { onOpen } = useModal();
 
@@ -29,7 +31,8 @@ export default function Seleksi({ datacalonpenghuni }: PenghuniProps) {
         <h1 className="text-4xl font-bold">Seleksi Penghuni</h1>
 
         <div className="flex gap-4">
-          <div className="rounded-xl bg-purple-300 flex gap-4 items-center text-purple-800 px-4 cursor-pointer border border-purple-800"
+          <div
+            className="rounded-xl bg-purple-300 flex gap-4 items-center text-purple-800 px-4 cursor-pointer border border-purple-800"
             onClick={() => {
               onOpen("dataCalonPenghuni");
             }}
@@ -39,11 +42,19 @@ export default function Seleksi({ datacalonpenghuni }: PenghuniProps) {
           </div>
 
           <div className="flex items-center gap-4 border border-gray-400 w-64 p-3 rounded-lg">
-            <AiOutlineSearch className="text-gray-400 text-2xl relative" />
+            <div
+              className="cursor-pointer"
+              onClick={() => router.push(`/seleksi?search=${search}`)}
+            >
+              <AiOutlineSearch className="text-gray-400 text-2xl relative" />
+            </div>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search by Name"
               className="focus:outline-none bg-transparent focus:border-none"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -61,36 +72,67 @@ export default function Seleksi({ datacalonpenghuni }: PenghuniProps) {
         </thead>
 
         <tbody>
-          {datacalonpenghuni.data?.map((penghuni: Penghuni['data'], index: number) => (
-            <tr className="border border-gray-300" key={index}>
-              <td className="p-4 cursor-pointer" onClick={() => onOpen("dataCalonPenghuni", { userId: penghuni.id })}>{penghuni.nama}</td>
-              <td className="p-4">{penghuni.jenis_kelamin}</td>
-              <td className="p-4">{penghuni.nomor_telepon}</td>
-              <td className="p-4">
-                <div className={`flex items-center px-1.5 gap-2 py-0.5 w-3/4 rounded-xl
-                ${penghuni.status === "Menunggu Pembuatan Kontrak" ? "text-amber-600 bg-[#FFF2DD]" :
-                    penghuni.status === "Menunggu Pembayaran" ? "text-green-600 bg-green-100" : "text-gray-800 bg-gray-200"}`}>
-                  <GoDotFill className="text-xl" />
-                  <p>{penghuni.status}</p>
-                </div>
-              </td>
-              <td className="p-4">
+          {datacalonpenghuni.data?.map(
+            (penghuni: Penghuni["data"], index: number) => (
+              <tr className="border border-gray-300" key={index}>
+                <td
+                  className="p-4 cursor-pointer"
+                  onClick={() =>
+                    onOpen("dataCalonPenghuni", { userId: penghuni.id })
+                  }
+                >
+                  {penghuni.nama}
+                </td>
+                <td className="p-4">{penghuni.jenis_kelamin}</td>
+                <td className="p-4">{penghuni.nomor_telepon}</td>
+                <td className="p-4">
+                  <div
+                    className={`flex items-center px-1.5 gap-2 py-0.5 w-3/4 rounded-xl
+                ${
+                  penghuni.status === "Menunggu Pembuatan Kontrak"
+                    ? "text-amber-600 bg-[#FFF2DD]"
+                    : penghuni.status === "Menunggu Pembayaran"
+                    ? "text-green-600 bg-green-100"
+                    : "text-gray-800 bg-gray-200"
+                }`}
+                  >
+                    <GoDotFill className="text-xl" />
+                    <p>{penghuni.status}</p>
+                  </div>
+                </td>
+                <td className="p-4">
                   <CiEdit
                     className="text-4xl text-gray-400 cursor-pointer hover:scale-110"
-                    onClick={() => onOpen(`${penghuni.status === "Belum Direview" ? "reviewCalonPenghuni" : penghuni.status === "Menunggu Pembuatan Kontrak" ? "kontrak" : "dataCalonPenghuni"}`, { userId: penghuni.id })}
+                    onClick={() =>
+                      onOpen(
+                        `${
+                          penghuni.status === "Belum Direview"
+                            ? "reviewCalonPenghuni"
+                            : penghuni.status === "Menunggu Pembuatan Kontrak"
+                            ? "kontrak"
+                            : "dataCalonPenghuni"
+                        }`,
+                        { userId: penghuni.id }
+                      )
+                    }
                   />
-              </td>
-            </tr>
-          ))}
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
+
+      {datacalonpenghuni.data.length === 0 && (
+        <div className="text-center w-full mb-12">No Data Found</div>
+      )}
 
       <Pagination
         currentPage={currentPage}
         pageSize={10}
         totalDataCount={10 * datacalonpenghuni.totalPages}
         onPageChange={(page) => {
-          router.push(`/seleksi/${page}`);
+          router.push(`/seleksi?page=${page}&search=${search}`);
         }}
       />
     </div>
