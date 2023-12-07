@@ -2,21 +2,37 @@ import Penghuni from "./Penghuni";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-
 export default async function PenghuniPage({
   params,
+  searchParams,
 }: {
   params: { page: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const cookie = cookies()?.get("token")?.value;
   if (cookie === undefined) {
     redirect("/login");
   }
-  const data = await fetch(process.env.API_URL + "penghuni", {
-    headers: {
-      Authorization: `Bearer ${cookie}`,
-    },
-  }).then((res) => res.json());
+
+  var page: number = 1;
+  if (searchParams?.page !== undefined) {
+    page = +searchParams?.page;
+  }
+  var search = "";
+  if (searchParams?.search !== undefined) {
+    search = searchParams?.search.toString();
+  }
+
+  const res = await fetch(
+    process.env.API_URL +
+      `penghuni?page=${page}${search !== "" ? `&search=${search}` : ""}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookie}`,
+      },
+    }
+  );
+  const data = await res.json();
 
   return (
     <div className="min-h-screen w-full p-[7%]">

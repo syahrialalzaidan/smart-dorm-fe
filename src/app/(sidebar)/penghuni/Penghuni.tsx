@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/useModalStore";
 import { CiEdit } from "react-icons/ci";
 import { Penghuni, PenghuniList, PenghuniPageProps } from "@/types/penghuni";
+import { useState } from "react";
 
 interface PenghuniProps {
   datapenghuni: PenghuniPageProps;
@@ -14,6 +15,7 @@ interface PenghuniProps {
 export default function Penghuni({ datapenghuni }: PenghuniProps) {
   const pathname = usePathname();
   let currentPage: number = 1;
+  const [search, setSearch] = useState("");
   if (pathname === "/penghuni") {
   } else {
     currentPage = +pathname.substring(pathname.length - 1);
@@ -26,11 +28,19 @@ export default function Penghuni({ datapenghuni }: PenghuniProps) {
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Penghuni</h1>
         <div className="flex items-center gap-4 border border-gray-400 w-64 p-3 rounded-lg">
-          <AiOutlineSearch className="text-gray-400 text-2xl relative" />
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push(`/penghuni?search=${search}`)}
+          >
+            <AiOutlineSearch className="text-gray-400 text-2xl relative" />
+          </div>
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search by Name"
             className="focus:outline-none bg-transparent focus:border-none"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
           />
         </div>
       </div>
@@ -58,7 +68,9 @@ export default function Penghuni({ datapenghuni }: PenghuniProps) {
               <td className="p-4">
                 <CiEdit
                   className="text-4xl text-gray-400 cursor-pointer hover:scale-110"
-                  onClick={() => onOpen("dataPenghuni", { userId: penghuni.id })}
+                  onClick={() =>
+                    onOpen("dataPenghuni", { userId: penghuni.id })
+                  }
                 />
               </td>
             </tr>
@@ -66,12 +78,16 @@ export default function Penghuni({ datapenghuni }: PenghuniProps) {
         </tbody>
       </table>
 
+      {datapenghuni.data.length === 0 && (
+        <div className="text-center w-full mb-12">No Data Found</div>
+      )}
+
       <Pagination
         currentPage={currentPage}
         pageSize={10}
         totalDataCount={10 * datapenghuni.totalPage}
         onPageChange={(page) => {
-          router.push(`/penghuni/${page}`);
+          router.push(`/penghuni?page=${page}&search=${search}`);
         }}
       />
     </div>

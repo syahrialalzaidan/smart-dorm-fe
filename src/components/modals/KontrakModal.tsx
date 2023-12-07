@@ -47,7 +47,7 @@ export const KontrakModal = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(new Date(tanggalMasuk), tanggalKeluar, idKamar, pinAkses);
+        // console.log(new Date(tanggalMasuk), tanggalKeluar, idKamar, pinAkses);
         setIsSubmitting(true);
         const res = await fetch(`http://localhost:8080/kontrak`, {
             method: "POST",
