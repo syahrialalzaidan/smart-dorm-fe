@@ -32,11 +32,6 @@ export default function Kamar({ kamar, currentPage  }: { kamar: KamarProps, curr
         <h1 className="font-bold text-4xl">Kamar</h1>
 
         <div className="flex gap-2">
-          <button className="bg-purple-100 text-purple-700 flex gap-4 items-center justify-center rounded-lg px-4 py-2">
-            <p>Sort</p>
-            <FaSort />
-          </button>
-
           <div className="flex items-center gap-4 border border-gray-400 w-64 p-3 rounded-lg">
             <div
               className="cursor-pointer"
