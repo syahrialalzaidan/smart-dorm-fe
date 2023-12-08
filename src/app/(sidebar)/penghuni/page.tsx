@@ -24,7 +24,7 @@ export default async function PenghuniPage({
   }
 
   const res = await fetch(
-    "http://127.0.0.1:8080/" +
+    process.env.API_URL +
       `penghuni?page=${page}${search !== "" ? `&search=${search}` : ""}`,
     {
       headers: {
