@@ -24,7 +24,7 @@ export default async function PenghuniPage({
   }
 
   const res = await fetch(
-    process.env.API_URL +
+    "http://127.0.0.1:8080/" +
       `penghuni?page=${page}${search !== "" ? `&search=${search}` : ""}`,
     {
       headers: {
@@ -36,7 +36,7 @@ export default async function PenghuniPage({
 
   return (
     <div className="min-h-screen w-full p-[7%]">
-      <Penghuni datapenghuni={data} />
+      <Penghuni datapenghuni={data} currentPage={page} />
     </div>
   );
 }
