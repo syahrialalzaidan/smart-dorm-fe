@@ -28,8 +28,8 @@ export const DataCalonPenghuniModal = () => {
         error,
         isLoading,
     } = useSWR<Penghuni>(
-        `http://localhost:8080/penghuni/${data.userId}`,
-        () => fetcher(`http://localhost:8080/penghuni/${data.userId}`, token as string)
+        process.env.API_URL + `penghuni/${data.userId}`,
+        () => fetcher(process.env.API_URL + `penghuni/${data.userId}`, token as string)
     );
 
     useEffect(() => {
@@ -73,7 +73,7 @@ export const DataCalonPenghuniModal = () => {
         event.preventDefault()
         setIsSubmitting(true);
         setIsPembayaranChecked(event.target.checked);
-        const res = await fetch(`http://localhost:8080/penghuni/${data.userId}`, {
+        const res = await fetch(process.env.API_URL + `penghuni/${data.userId}`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,

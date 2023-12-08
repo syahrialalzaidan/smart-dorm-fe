@@ -22,7 +22,7 @@ export default function LoginForm() {
 
   const handleLogin = async () => {
     setIsSubmitting(true);
-    const res = await fetch("http://localhost:8080/login", {
+    const res = await fetch(process.env.API_URL + "login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
