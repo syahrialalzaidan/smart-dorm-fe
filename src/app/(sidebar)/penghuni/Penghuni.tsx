@@ -10,11 +10,11 @@ import { useState } from "react";
 
 interface PenghuniProps {
   datapenghuni: PenghuniPageProps;
+  currentPage: number;
 }
 
-export default function Penghuni({ datapenghuni }: PenghuniProps) {
+export default function Penghuni({ datapenghuni, currentPage }: PenghuniProps) {
   const pathname = usePathname();
-  let currentPage: number = 1;
   const [search, setSearch] = useState("");
   if (pathname === "/penghuni") {
   } else {

@@ -36,7 +36,7 @@ export default async function PenghuniPage({
 
   return (
     <div className="min-h-screen w-full p-[7%]">
-      <Penghuni datapenghuni={data} />
+      <Penghuni datapenghuni={data} currentPage={page} />
     </div>
   );
 }
