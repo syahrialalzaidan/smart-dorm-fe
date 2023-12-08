@@ -32,8 +32,8 @@ export const KontrakModal = () => {
         error,
         isLoading,
     } = useSWR<Penghuni>(
-        `http://localhost:8080/penghuni/${data.userId}`,
-        () => fetcher(`http://localhost:8080/penghuni/${data.userId}`, token as string)
+        process.env.API_URL + `penghuni/${data.userId}`,
+        () => fetcher(process.env.API_URL + `penghuni/${data.userId}`, token as string)
     );
 
     useEffect(() => {
@@ -49,8 +49,8 @@ export const KontrakModal = () => {
         error: errorKamar,
         isLoading: isLoadingKamar,
     } = useSWR<Kamar[]>(
-        `http://localhost:8080/kamar/available`,
-        () => fetcher(`http://localhost:8080/kamar/available`, token as string)
+        process.env.API_URL + `kamar/available`,
+        () => fetcher(process.env.API_URL + `kamar/available`, token as string)
     );
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,7 +64,7 @@ export const KontrakModal = () => {
             return;
         }
 
-        const res = await fetch(`http://localhost:8080/kontrak`, {
+        const res = await fetch(process.env.API_URL + `kontrak`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

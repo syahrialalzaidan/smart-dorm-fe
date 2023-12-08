@@ -23,8 +23,8 @@ export const DataPenghuniModal = () => {
         error,
         isLoading,
     } = useSWR<Penghuni>(
-        `http://localhost:8080/penghuni/${data.userId}`,
-        () => fetcher(`http://localhost:8080/penghuni/${data.userId}`, token as string)
+        process.env.API_URL + `penghuni/${data.userId}`,
+        () => fetcher(process.env.API_URL + `penghuni/${data.userId}`, token as string)
     );
 
     const [showModal, setShowModal] = useState(isOpen);
@@ -41,7 +41,7 @@ export const DataPenghuniModal = () => {
     const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
-        const res = await fetch(`http://localhost:8080/penghuni/${data.userId}`, {
+        const res = await fetch(process.env.API_URL + `penghuni/${data.userId}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
