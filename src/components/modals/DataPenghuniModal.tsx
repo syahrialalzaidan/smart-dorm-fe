@@ -30,6 +30,14 @@ export const DataPenghuniModal = () => {
     const [showModal, setShowModal] = useState(isOpen);
     const [isSubmitting, setIsSubmitting] = useState(false)
 
+    useEffect(() => {
+        if (isSubmitting) {
+            toast.loading("Loading...")
+        } else {
+            toast.dismiss();
+        }
+    }, [isSubmitting]);
+
     const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -41,12 +49,15 @@ export const DataPenghuniModal = () => {
         });
 
         if (res.status === 200) {
-            toast.success("Successfully deleted!");
+            setTimeout(() => {
+                toast.success("Successfully deleted!");
+            }, 500)
             handleClose();
             router.refresh();
-            window.location.reload();
         } else {
-            toast.error("Failed to delete!");
+            setTimeout(() => {
+                toast.error("Failed to delete!");
+            }, 500)
         }
         setIsSubmitting(false);
     }
