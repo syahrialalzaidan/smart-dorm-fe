@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Cookies from "universal-cookie";
@@ -10,7 +10,18 @@ export default function LoginForm() {
   const router = useRouter();
   const cookies = new Cookies();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isSubmitting) {
+      toast.loading("Loading...")
+    } else {
+      toast.dismiss();
+    }
+  }, [isSubmitting]);
+
   const handleLogin = async () => {
+    setIsSubmitting(true);
     const res = await fetch("http://localhost:8080/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -20,12 +31,17 @@ export default function LoginForm() {
     const data = await res.json();
 
     if (res.ok) {
-      toast.success("Successfully logged in!");
+      setTimeout(() => {
+        toast.success("Successfully logged in!");
+      }, 500);
       cookies.set("token", data.token);
       router.push("/kamar");
     } else {
-      toast.error("Failed to login!");
+      setTimeout(() => {
+        toast.error("Failed to login!");
+      }, 500);
     }
+    setIsSubmitting(false);
   };
 
   return (

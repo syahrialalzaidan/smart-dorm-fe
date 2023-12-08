@@ -56,12 +56,15 @@ export const ReviewCalonPenghuniModal = () => {
         });
 
         if (res.status === 200) {
-            toast.success("Successfully deleted!");
+            setTimeout(() => {
+                toast.success("Calon Penghuni successfully deleted!");
+            }, 500)
             handleClose();
             router.refresh();
-            window.location.reload();
         } else {
-            toast.error("Failed to delete!");
+            setTimeout(() => {
+                toast.error("Failed to delete calon penghuni!");
+            }, 500)
         }
         setIsSubmitting(false);
     }
@@ -77,12 +80,17 @@ export const ReviewCalonPenghuniModal = () => {
         });
 
         if (res.status === 200) {
-            toast.success("Successfully updated!");
+            setTimeout(() => {
+                toast.success("Calon Penghuni Successfully accepted!", {
+                    duration: 3000
+                });
+            }, 500)
             handleClose();
             router.refresh();
-            window.location.reload();
         } else {
-            toast.error("Failed to update!");
+            setTimeout(() => {
+                toast.error("Failed to update calon penghuni!");
+            }, 500)
         }
         setIsSubmitting(false);
     }

@@ -31,16 +31,6 @@ export default function Seleksi({
         <h1 className="text-4xl font-bold">Seleksi Penghuni</h1>
 
         <div className="flex gap-4">
-          <div
-            className="rounded-xl bg-purple-300 flex gap-4 items-center text-purple-800 px-4 cursor-pointer border border-purple-800"
-            onClick={() => {
-              onOpen("dataCalonPenghuni");
-            }}
-          >
-            <p>Tambah Calon Penghuni</p>
-            <IoIosPersonAdd className="text-4xl" />
-          </div>
-
           <div className="flex items-center gap-4 border border-gray-400 w-64 p-3 rounded-lg">
             <div
               className="cursor-pointer"

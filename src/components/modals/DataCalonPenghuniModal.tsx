@@ -43,7 +43,7 @@ export const DataCalonPenghuniModal = () => {
             setIsReviewChecked(false);
             setIsKontrakChecked(false);
         }
-    }, [penghuniData?.data.status]);
+    }, [penghuniData?.data?.status]);
 
     const handleClose = useCallback(() => {
         if (isSubmitting) return;
@@ -61,6 +61,14 @@ export const DataCalonPenghuniModal = () => {
         setIsKontrakChecked(event.target.checked);
     }
 
+    useEffect(() => {
+        if (isSubmitting) {
+            toast.loading("Loading...")
+        } else {
+            toast.dismiss();
+        }
+    }, [isSubmitting]);
+
     const handlePembayaranCheckboxChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault()
         setIsSubmitting(true);
@@ -73,12 +81,15 @@ export const DataCalonPenghuniModal = () => {
         });
 
         if (res.status === 200) {
-            toast.success("Successfully updated!");
+            setTimeout(() => {
+                toast.success("Successfully updated!");
+            }, 500)
             handleClose();
             router.refresh();
-            window.location.reload();
         } else {
-            toast.error("Failed to update!");
+            setTimeout(() => {
+                toast.error("Failed to update!");
+            }, 500)
         }
         setIsSubmitting(false);
     }
@@ -159,7 +170,7 @@ export const DataCalonPenghuniModal = () => {
                                 />
                             </div>
                         )}
-                        {isReviewChecked && isKontrakChecked &&  (
+                        {isReviewChecked && isKontrakChecked && (
                             <div className={`flex gap-2.5 px-4 border py-2.5 ${isPembayaranChecked ? 'border-purple-700 text-purple-700 bg-purple-100' : 'border-slate-300 text-slate-600'} rounded-md`}>
                                 <label className="text-sm font-semibold">Pembayaran</label>
                                 <input

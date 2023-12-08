@@ -36,6 +36,14 @@ export const KontrakModal = () => {
         () => fetcher(`http://localhost:8080/penghuni/${data.userId}`, token as string)
     );
 
+    useEffect(() => {
+        if (isSubmitting) {
+            toast.loading("Loading...")
+        } else {
+            toast.dismiss();
+        }
+    }, [isSubmitting]);
+
     const {
         data: kamarData,
         error: errorKamar,
@@ -47,8 +55,15 @@ export const KontrakModal = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(new Date(tanggalMasuk), tanggalKeluar, idKamar, pinAkses);
         setIsSubmitting(true);
+        if (tanggalMasuk === "" || tanggalKeluar === "" || idKamar === "" || pinAkses === "") {
+            setTimeout(() => {
+                toast.error("Please fill all the fields!");
+            }, 500);
+            setIsSubmitting(false);
+            return;
+        }
+
         const res = await fetch(`http://localhost:8080/kontrak`, {
             method: "POST",
             headers: {
@@ -65,12 +80,15 @@ export const KontrakModal = () => {
         });
 
         if (res.status === 200) {
-            toast.success("Successfully deleted!");
+            setTimeout(() => {
+                toast.success("Kontrak succesfully created!");
+            }, 500)
             handleClose();
             router.refresh();
-            window.location.reload();
         } else {
-            toast.error("Failed to delete!");
+            setTimeout(() => {
+                toast.error("Failed to create kontrak!");
+            }, 500)
         }
         setIsSubmitting(false);
 
@@ -160,6 +178,7 @@ export const KontrakModal = () => {
                                     type="date"
                                     className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                     onChange={(e) => setTanggalMasuk(e.target.value)}
+                                    min={new Date().toISOString().split('T')[0]}
                                 />
                             </div>
                             <div className="w-1/2 flex flex-col gap-2">
@@ -168,6 +187,7 @@ export const KontrakModal = () => {
                                     type="date"
                                     className="border border-slate-300 rounded-sm py-1 px-3 w-full placeholder-slate-500"
                                     onChange={(e) => setTanggalKeluar(e.target.value)}
+                                    min={tanggalMasuk}
                                 />
                             </div>
                         </div>
@@ -175,8 +195,8 @@ export const KontrakModal = () => {
                             <div className="w-1/2 flex flex-col gap-2">
                                 <label>Kamar</label>
                                 <select
-                                    className="border border-slate-300 rounded-sm py-1.5 px-2 text-slate-500 w-full placeholder-slate-500"
-                                    placeholder="Jenis Kelamin"
+                                    className="border border-slate-300 rounded-sm py-1.5 px-2 w-full"
+                                    placeholder="Nomor Kamar"
                                     onChange={(e) => {
                                         const selectedNomorKamar = parseInt(e.target.value);
                                         const selectedKamar = kamarData?.find((kamar) => kamar.nomor_kamar === selectedNomorKamar);
@@ -184,7 +204,7 @@ export const KontrakModal = () => {
                                         if (selectedKamar) {
                                             setIdKamar(selectedKamar.id);
                                         } else {
-                                            setIdKamar(""); 
+                                            setIdKamar("");
                                         }
                                     }}
                                 >
