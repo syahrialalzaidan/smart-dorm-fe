@@ -50,7 +50,7 @@ export const KontrakModal = () => {
         isLoading: isLoadingKamar,
     } = useSWR<Kamar[]>(
         process.env.API_URL + `kamar/available`,
-        () => fetcher(process.env.API_URL + `kamar/available`, token as string)
+        () => fetcher(process.env.API_URL + `kamar/available`, token as string), { refreshInterval: 500 }
     );
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
