@@ -29,7 +29,7 @@ export const DataCalonPenghuniModal = () => {
         isLoading,
     } = useSWR<Penghuni>(
         process.env.API_URL + `penghuni/${data.userId}`,
-        () => fetcher(process.env.API_URL + `penghuni/${data.userId}`, token as string)
+        () => fetcher(process.env.API_URL + `penghuni/${data.userId}`, token as string), { refreshInterval: 500 }
     );
 
     useEffect(() => {
